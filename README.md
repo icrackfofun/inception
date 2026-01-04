@@ -108,7 +108,7 @@ The following resources were used to develop and validate the project:
 
 -   **Tutorials**: Online guides on containerized WordPress setups and persistent volume management.
 
-**AI usage**: Assistance was used to generate explanations for configuration files, troubleshoot container startup issues, and draft example Dockerfiles and scripts. AI did not write the final configuration; all final code and setup decisions were made by the student.
+**AI usage**: Assistance was used to help explain configuration files, troubleshoot container startup issues, and draft better understand Dockerfiles and scripts.
 
 * * * * *
 
