@@ -227,7 +227,7 @@ You should see the WordPress site fully installed, not the installation page. HT
 <br><br>
 7.  **Administration panel**:<br><br>
 
-    Access `/wp-admin` to log in as the administrator using the password in the secrets directory (in this case with user: owner, pw: inception).
+Access `/wp-admin` to log in as the administrator using the password in the secrets directory (in this case with user: owner, pw: inception).
 <br><br>
 8.  **Stop services**<br><br>
 
