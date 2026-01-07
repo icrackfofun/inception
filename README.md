@@ -65,8 +65,8 @@ The project demonstrates a real-world microservice approach, where services comm
 These instruction use my user to setup the project, but you can change this to use your own domain.
 Likewise with any other information (users, hosts, etc). Remember that in this case you must also change the information in the corresponding config files.
 To set up and run the project, follow these steps:
-
-0.  **Install Docker**
+<br>
+0.  **Install Docker**<br>
 
 This application was designed to run on a Linux machine.
 To install Docker run the following commands:
