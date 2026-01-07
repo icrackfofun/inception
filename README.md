@@ -62,7 +62,7 @@ The project demonstrates a real-world microservice approach, where services comm
 
 **Instructions**
 
-These instruction use my user to setup the project, but you can change this to use your own domain.
+These instructions use my 42 user to setup the project, but you can change this to use your own domain.
 Likewise with any other information (users, hosts, etc). Remember that in this case you must also change the information in the corresponding config files.
 To set up and run the project, follow these steps:
 <br><br>
