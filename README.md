@@ -29,67 +29,227 @@ The project demonstrates a real-world microservice approach, where services comm
 
 * * * * *
 
+**Directory Structure**
+
+```
+.
+├── Makefile
+├── secrets
+│   ├── db_root_password.txt
+│   ├── db_user_password.txt
+│   └── wp_admin_password.txt
+└── srcs
+    ├── docker-compose.yml
+    ├── .env
+    └── requirements
+        ├── mariadb
+        │   ├── Dockerfile
+        │   └── tools
+        │       ├── 50-server.cnf
+        │       └── entrypoint.sh
+		|		└── init.sql
+        ├── nginx
+        │   ├── Dockerfile
+        │   └── tools
+        │       └── nginx.conf
+        └── wordpress
+            ├── Dockerfile
+            └── tools
+                └── entrypoint.sh
+```
+
+* * * * *
+
 **Instructions**
 
-
+These instruction use my user to setup the project, but you can change this to use your own domain.
+Likewise with any other information (users, hosts, etc). Remember that in this case you must also change the information in the corresponding config files.
 To set up and run the project, follow these steps:
+
+0.  **Install Docker**
+
+This application was designed to run on a Linux machine.
+To install Docker run the following commands:
+
+Update packages and install verification tools
+- Use `curl` to download Docker’s **GPG key**
+- Use `gnupg` to **verify authenticity**
+- Use `ca-certificates` to trust HTTPS
+- Use `lsb-release` to pick the **correct repo**
+```bash
+#update packages
+sudo apt update
+
+#verification tools
+sudo apt install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+```
+
+install docker gpg key for package validation
+```bash
+#create directory for docker gpg key
+sudo mkdir -p /etc/apt/keyrings
+
+#download docker gpg key
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+#read permission to everyone on this file
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+```
+
+install docker 
+```bash
+#where to download Docker, architecture, and which GPG key to trust.
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+https://download.docker.com/linux/ubuntu jammy stable" \
+| sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+#update the packages again
+sudo apt update
+
+#installation of cli, daemon, compose
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Verify installation:
+```bash
+#check docker version
+docker --version
+
+#check docker compose version
+docker compose version
+```
+
+add user to docker group
+```bash
+#adds user to docker group
+sudo usermod -aG docker $USER
+
+#starts new session with updated user groups
+newgrp docker
+```
+
+Test
+```bash
+#should pull image from docker hub
+docker run hello-world
+```
 
 1.  **Clone the repository**:
 
-`git clone <repo_url> my_project
-cd my_project`
+```bash
+git clone <repo_url> my_project
+cd my_project
+```
 
-2.  **Prepare secrets and environment variables**:\
-    Create a `.env` file and a `secrets` directory inside srcs/ containing all required credentials. For example:
+2. **Prepare the Data directories and Domain Simulation**
+bind volumes live under:
+```bash
+/home/login/data
+```
 
-`secrets/db_root_password
+So on your machine, **simulate this**:
+```bash
+#create data directory in user home
+mkdir /home/$USER/data/mariadb
+mkdir /home/$USER/data/wordpress
+```
+Later your compose file should map volumes there (or use named volumes).
+
+Your project domain:
+```
+login.42.fr
+```
+
+Locally, simulate this:
+```bash
+#local file that overrides dns resolution
+sudo nano /etc/hosts
+```
+
+Add:
+```bash
+127.0.0.1 psantos-.42.fr
+```
+
+3.  **Prepare secrets and environment variables**:
+
+You can inspect  the `.env` file (inside /srcs) and the `secrets` directory containing all required credentials:
+
+```bash
+secrets/db_root_password
 secrets/db_user_password
-secrets/wp_admin_password`
+secrets/wp_admin_password
+```
 
 The `.env` file should contain:
 
-`MYSQL_DB=wordpress
-MYSQL_USER=example_user
+```bash
+MYSQL_DB=wordpress
+MYSQL_USER=wp_user #this is the database user besides host
 MYSQL_HOST=mariadb
-WP_ADMIN_USER=example_user2
+WP_ADMIN_USER=owner
 WP_ADMIN_EMAIL=example@example.com
-WP_URL=https://user.42.fr`
+WP_URL=https://psantos-.42.fr
+```
 
-3.  **Build and launch all services**:
+4.  **Build and launch all services**:
 
-`make`
+```bash
+make
+```
 
 This command executes the `all` rule in the Makefile, which builds the Docker images for all services and starts them via Docker Compose.
 
-4.  **Verify services**:
+5.  **Verify services**:
 
-`docker compose ps
+```bash
+docker compose ps
 docker volume ls
-docker network ls`
+docker network ls
+```
 
 Confirm that all containers are running, volumes exist for persistence, and the Docker network allows inter-container communication.
 
-5.  **Access the website**:\
-    Open a browser and navigate to:
+6.  **Access the website**:\
 
-`https://user.42.fr`
+Open a browser and navigate to:
+
+```bash
+https://psantos-.42.fr
+```
 
 You should see the WordPress site fully installed, not the installation page. HTTP access (port 80) is blocked by design.
 
-6.  **Administration panel**:\
-    Access `/wp-admin` to log in as the administrator using the password in the secrets directory.
+7.  **Administration panel**:\
+    Access `/wp-admin` to log in as the administrator using the password in the secrets directory (in this case with user: owner, pw: inception).
 
-7.  **Stop services**:
+8.  **Stop services**:
 
-`make down`
+```bash
+make down
+```
 
 This stops and removes the containers but preserves volumes and network for persistence.
 
-8.  **Rebuild images without cache**:
+9.  **Rebuild images without cache**:
 
-`make build`
+```bash
+make build
+```
 
 This is useful after modifying Dockerfiles or configuration.
+
+10.  **Stop services and Delete images and Volumes**:
+
+```bash
+make clean
+```
+
+This stops and removes the containers and destroys volumes and images. Data persists in the bind mounted home/{user}/data/ directory
 
 * * * * *
 
@@ -108,7 +268,7 @@ The following resources were used to develop and validate the project:
 
 -   **Tutorials**: Online guides on containerized WordPress setups and persistent volume management.
 
-**AI usage**: Assistance was used to help explain configuration files, troubleshoot container startup issues, and draft better understand Dockerfiles and scripts.
+**AI usage**: Assistance was used to generate explanations for configuration files, troubleshoot container startup issues, and draft example Dockerfiles and scripts. AI did not write the final configuration; all final code and setup decisions were made by the student.
 
 * * * * *
 
