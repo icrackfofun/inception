@@ -138,14 +138,19 @@ Test
 docker run hello-world
 ```
 
+
 1.  **Clone the repository**:
+
 
 ```bash
 git clone <repo_url> my_project
 cd my_project
 ```
 
+
 2. **Prepare the Data directories and Domain Simulation**
+
+   
 bind volumes live under:
 ```bash
 /home/login/data
@@ -175,7 +180,9 @@ Add:
 127.0.0.1 psantos-.42.fr
 ```
 
+
 3.  **Prepare secrets and environment variables**:
+
 
 You can inspect  the `.env` file (inside /srcs) and the `secrets` directory containing all required credentials:
 
@@ -196,7 +203,9 @@ WP_ADMIN_EMAIL=example@example.com
 WP_URL=https://psantos-.42.fr
 ```
 
+
 4.  **Build and launch all services**:
+
 
 ```bash
 make
@@ -204,7 +213,9 @@ make
 
 This command executes the `all` rule in the Makefile, which builds the Docker images for all services and starts them via Docker Compose.
 
+
 5.  **Verify services**:
+
 
 ```bash
 docker compose ps
@@ -214,7 +225,9 @@ docker network ls
 
 Confirm that all containers are running, volumes exist for persistence, and the Docker network allows inter-container communication.
 
+
 6.  **Access the website**:\
+
 
 Open a browser and navigate to:
 
@@ -224,10 +237,15 @@ https://psantos-.42.fr
 
 You should see the WordPress site fully installed, not the installation page. HTTP access (port 80) is blocked by design.
 
+
 7.  **Administration panel**:\
+
+
     Access `/wp-admin` to log in as the administrator using the password in the secrets directory (in this case with user: owner, pw: inception).
 
+
 8.  **Stop services**:
+
 
 ```bash
 make down
@@ -235,7 +253,9 @@ make down
 
 This stops and removes the containers but preserves volumes and network for persistence.
 
+
 9.  **Rebuild images without cache**:
+
 
 ```bash
 make build
