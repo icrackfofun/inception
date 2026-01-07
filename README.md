@@ -137,20 +137,16 @@ Test
 #should pull image from docker hub
 docker run hello-world
 ```
-
-
-1.  **Clone the repository**:
-
+<br><br>
+1.  **Clone the repository**<br><br>
 
 ```bash
 git clone <repo_url> my_project
 cd my_project
 ```
+<br><br>
+2. **Prepare the Data directories and Domain Simulation**<br><br>
 
-
-2. **Prepare the Data directories and Domain Simulation**
-
-   
 bind volumes live under:
 ```bash
 /home/login/data
@@ -179,10 +175,8 @@ Add:
 ```bash
 127.0.0.1 psantos-.42.fr
 ```
-
-
-3.  **Prepare secrets and environment variables**:
-
+<br><br>
+3.  **Prepare secrets and environment variables**<br><br>
 
 You can inspect  the `.env` file (inside /srcs) and the `secrets` directory containing all required credentials:
 
@@ -202,20 +196,16 @@ WP_ADMIN_USER=owner
 WP_ADMIN_EMAIL=example@example.com
 WP_URL=https://psantos-.42.fr
 ```
-
-
-4.  **Build and launch all services**:
-
+<br><br>
+4.  **Build and launch all services**<br><br>
 
 ```bash
 make
 ```
 
 This command executes the `all` rule in the Makefile, which builds the Docker images for all services and starts them via Docker Compose.
-
-
-5.  **Verify services**:
-
+<br><br>
+5.  **Verify services**<br><br>
 
 ```bash
 docker compose ps
@@ -224,10 +214,8 @@ docker network ls
 ```
 
 Confirm that all containers are running, volumes exist for persistence, and the Docker network allows inter-container communication.
-
-
-6.  **Access the website**:\
-
+<br><br>
+6.  **Access the website**<br><br>
 
 Open a browser and navigate to:
 
@@ -236,34 +224,28 @@ https://psantos-.42.fr
 ```
 
 You should see the WordPress site fully installed, not the installation page. HTTP access (port 80) is blocked by design.
-
-
-7.  **Administration panel**:\
-
+<br><br>
+7.  **Administration panel**:<br><br>
 
     Access `/wp-admin` to log in as the administrator using the password in the secrets directory (in this case with user: owner, pw: inception).
-
-
-8.  **Stop services**:
-
+<br><br>
+8.  **Stop services**<br><br>
 
 ```bash
 make down
 ```
 
 This stops and removes the containers but preserves volumes and network for persistence.
-
-
-9.  **Rebuild images without cache**:
-
+<br><br>
+9.  **Rebuild images without cache**<br><br>
 
 ```bash
 make build
 ```
 
 This is useful after modifying Dockerfiles or configuration.
-
-10.  **Stop services and Delete images and Volumes**:
+<br><br>
+10.  **Stop services and Delete images and Volumes**<br><br>
 
 ```bash
 make clean
