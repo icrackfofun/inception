@@ -2,8 +2,8 @@
 
 * * * * *
 
-**WARNING: the secrets directory contains sensitive information and should not be shared or included in github commits. The best practice is to create a .gitignore file to ignore this directory. It is included here for demonstration purposes only, and to facilitate the understanding of the project structure**
-<br>
+**WARNING: the secrets directory contains sensitive information and should not be shared or included in github commits. The best practice is to create a .gitignore file to ignore this directory. It is included here for demonstration purposes only, and to facilitate the understanding of the project structure.**
+<br><br><br>
 **Description**
 
 
